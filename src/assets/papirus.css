@@ -10,6 +10,11 @@ a {
 	display: block;
 }
 
+@font-face {
+	font-family: bauhs;
+	src: url('~@/assets/fonts/BAUHS93.TTF');
+}
+
 body {
 	/*min-height: 100%;*/
 	background-color: #333;
@@ -19,11 +24,16 @@ body {
 	box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
 	font-weight: 200;
 	margin: 0;
-	font-size: 14px;
+	font-size: 16px;
 
 	display: grid;
 	/*grid-template-rows: 1fr;*/
 	grid-auto-rows: minmax(100px, auto);
+}
+
+h6>a {
+	color: #777;
+	text-shadow: none;
 }
 
 #app {
@@ -219,6 +229,39 @@ body {
 	background-position: 5px 50%;
 	background-size: 22px;
 	padding-left: 33px;
+}
+
+.read {
+	padding: 10px 20px;
+}
+
+.title {
+	font-size: 32px;
+	margin: 0;
+}
+
+.nav-page {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.text {
+	margin-top: 20px;
+}
+
+.btn-green {
+	background: #009688;
+	padding: 5px 12px;
+}
+
+.btn-prev {
+	justify-self: start;
+	margin-top: 20px;
+}
+
+.btn-next {
+	justify-self: end;
+	margin-top: 20px;
 }
 
 @media(min-width: 720px) {

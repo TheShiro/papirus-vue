@@ -43,7 +43,6 @@ export default {
 	},
 
 	mounted() {
-		// console.log(this.$route.params.title);
 		this.axios.get('http://localhost:8000/api/books/' + this.$route.params.title)
 			.then(response => (
 				this.books = response,

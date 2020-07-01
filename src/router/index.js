@@ -20,10 +20,22 @@ Vue.use(VueAxios, axios)
   {
     path: '/read/:title/:chapter',
     name: 'Read',
-    meta: {
-      layout: 'read'
-    },
     component: () => import('../views/Read.vue')
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: () => import('../views/Search.vue')
+  },
+  {
+    path: '/abount',
+    name: 'About',
+    component: () => import('../views/About.vue')
+  },
+  {
+    path: '/upload',
+    name: 'Upload',
+    component: () => import('../views/Upload.vue')
   }
 ]
 
