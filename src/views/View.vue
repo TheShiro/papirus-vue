@@ -29,7 +29,7 @@ export default {
 	name: 'View',
 	data() {
 		return {
-			books: null,
+			book: null,
 			id: null,
 		  	background_image: null,
 		  	title: '',
@@ -45,7 +45,7 @@ export default {
 	mounted() {
 		this.axios.get('http://localhost:8000/api/books/' + this.$route.params.title)
 			.then(response => (
-				this.books = response,
+				this.book = response,
 				this.id = response.data.id,
 				this.title = response.data.title,
 				this.author = response.data.author,
