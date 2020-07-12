@@ -4,8 +4,10 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import 'materialize-css/dist/js/materialize.min';
+import marked from 'marked/marked.min'
 
 Vue.config.productionTip = false
+Vue.filter('marked', marked)
 
 new Vue({
   router,

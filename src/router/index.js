@@ -10,32 +10,37 @@ Vue.use(VueAxios, axios)
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue')
+    component: () => import('@/views/Home.vue')
   },
   {
     path: '/view/:title',
     name: 'View',
-    component: () => import('../views/View.vue')
+    component: () => import('@/views/View.vue')
   },
   {
     path: '/read/:title/:chapter',
     name: 'Read',
-    component: () => import('../views/Read.vue')
+    component: () => import('@/views/Read.vue')
   },
   {
     path: '/search',
     name: 'Search',
-    component: () => import('../views/Search.vue')
+    component: () => import('@/views/Search.vue')
   },
   {
     path: '/abount',
     name: 'About',
-    component: () => import('../views/About.vue')
+    component: () => import('@/views/About.vue')
   },
   {
     path: '/upload',
     name: 'Upload',
-    component: () => import('../views/Upload.vue')
+    component: () => import('@/views/Upload.vue')
+  },
+  {
+    path: '/add/:component',
+    name: 'Add',
+    component: () => import('@/views/Add.vue')
   }
 ]
 

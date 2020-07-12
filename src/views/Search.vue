@@ -1,7 +1,7 @@
 <template>
 	<div class="search">
 		<h3 class="title">Поиск</h3>
-		<input v-model="search" name="search" class="fsearch" placeholder="Поиск" @keyup.enter="fetch">
+		<input v-model="search" name="search" class="fsearch" placeholder="Поиск" @change="fetch" autofocus>
 		<div class="list">
 	    	<div class="book-short" v-for="result in results">
 	    		<router-link :to="{path: path(result.alias)}">
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-	name: 'Read',
+	name: 'Search',
 	data() {
 		return {
 			search: '',
