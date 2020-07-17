@@ -1,7 +1,7 @@
 <template>
 	<div class="search">
 		<h3 class="title">Поиск</h3>
-		<input v-model="search" name="search" class="fsearch" placeholder="Поиск" @change="fetch" autofocus>
+		<input v-model="search" name="search" class="fsearch" placeholder="Поиск" autofocus>
 		<div class="list">
 	    	<div class="book-short" v-for="result in results">
 	    		<router-link :to="{path: path(result.alias)}">
@@ -26,7 +26,7 @@ export default {
 
     methods: {
         fetch() {
-        	console.log(this.search)
+        	// console.log(this.search)
 
             this.axios.get('http://localhost:8000/api/books/search/' + this.search)
                 .then(response => this.results = response.data)
@@ -39,6 +39,13 @@ export default {
         path(url) {
         	return '/view/' + url
         }
-    }
+    },
+
+    watch: {
+		search() {
+			this.result = []
+			this.fetch()
+		}
+	}
 }
 </script>
