@@ -33,14 +33,9 @@ Vue.use(VueAxios, axios)
     component: () => import('@/views/About.vue')
   },
   {
-    path: '/upload',
-    name: 'Upload',
-    component: () => import('@/views/Upload.vue')
-  },
-  {
-    path: '/add/:component',
-    name: 'Add',
-    component: () => import('@/views/Add.vue')
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/Admin.vue')
   }
 ]
 

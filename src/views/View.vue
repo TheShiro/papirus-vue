@@ -1,26 +1,32 @@
 <template>
 	<div class="view">
-		<div class="view-head">
-			<div class="view-background">
-				<img :src="background_image">
-			</div>
-			<div class="view-content">
-				<div class="info">
-					<div class="book-title">{{title}}</div>
-					<div class="book-author">{{author}}</div>
-					<div class="book-category">{{category}}</div>
+		<div v-if="done">
+			<div class="view-head">
+				<div class="view-background">
+					<img :src="background_image">
+				</div>
+				<div class="view-content">
+					<div class="info">
+						<div class="book-title">{{title}}</div>
+						<div class="book-author">{{author}}</div>
+						<div class="book-category">{{category}}</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="description">
-			<p>Описание</p>
-			<p>{{description}}</p>
+			<div class="description">
+				<p>Описание</p>
+				<p v-html="this.$options.filters.marked(description)">{{description}}</p>
+			</div>
+
+			<p>Оглавление</p>
+			<div class="chapters">
+				<div class="chapter-elem" v-for="chapter in chapters"><router-link :to="{path: chapter.path}">{{chapter.name}}</router-link></div>
+			</div>
 		</div>
 
-		<p>Оглавление</p>
-		<div class="chapters">
-			<div class="chapter-elem" v-for="chapter in chapters"><router-link :to="{path: chapter.path}">{{chapter.name}}</router-link></div>
-		</div>
+		<div class="loading" v-else>
+	    	загрузка...
+	    </div>
 	</div>
 </template>
 
@@ -39,24 +45,34 @@ export default {
 		  	description: '',
 		  	chapters: [],
 		  	alias: '',
+		  	done: false
 		}
 	},
 
-	mounted() {
-		this.axios.get('http://localhost:8000/api/books/' + this.$route.params.title)
-			.then(response => (
-				this.book = response,
-				this.id = response.data.id,
-				this.title = response.data.title,
-				this.author = response.data.author,
-				this.category_id = response.data.category,
-				this.description = response.data.description,
-				this.background_image = require('@/assets/images/' + response.data.image),
-				this.alias = response.data.alias
-			))
+	created() {
+		this.start()
+	},
 
-		this.axios.get('http://localhost:8000/api/chapters/' + this.$route.params.title)
-			.then(response => this.chapters = response.data)
+	methods: {
+		start() {
+			this.axios.get(this.$root.api + 'books/' + this.$route.params.title)
+				.then(response => (
+					this.book = response,
+					this.id = response.data.id,
+					this.title = response.data.title,
+					this.author = response.data.author,
+					this.category_id = response.data.category,
+					this.description = response.data.description,
+					this.background_image = this.$root.storage + response.data.image,
+					this.alias = response.data.alias,
+
+					this.axios.get(this.$root.api + 'chapters/' + this.$route.params.title)
+						.then(response => this.chapters = response.data),
+
+					this.done = true
+				))
+
+		}
 	}
 }
 </script>

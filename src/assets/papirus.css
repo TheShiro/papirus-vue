@@ -268,25 +268,87 @@ input[type=file] {
  * Upload page
  */
 
-.add {
+/*.add div {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-gap: 30px;
 	text-align: center;
 	margin-top: 30px;
+	font-size: 20px;
+	vertical-align: center;
+}*/
+
+.admin {
+	display: grid;
+	grid-gap: 20px;
+}
+
+.choice {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	text-align: center;
+	line-height: 60px;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.active {
+	border-bottom: solid 5px #00c89f;
+}
+
+.elem {
+	display: grid;
+	grid-template-columns: 600px repeat(3, 1fr);
+	text-align: center;
+	height: 60px;
+}
+
+.action {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	height: 40px;
 }
 
 .plus {
 	display: block;
-	width: 100%;
-	padding-top: 100%;
+	width: 100px;
+	padding-top: 100px;
 	background: url(images/plus.png) no-repeat 50% 50% #aaa;
-	margin-top: 20px;
-	transition: background ease-in-out .3s;
+	background-size: 80px;
+	transition: background .3s;
+	cursor: pointer;
 }
 
 .plus:hover {
 	background-image: url(images/plus_hover.png);
+}
+
+.edit {
+	display: block;
+	width: 40px;
+	padding-top: 40px;
+	background: url(images/edit.png) no-repeat 50% 50% #aaa;
+	background-size: 40px;
+	transition: background .3s;
+	cursor: pointer;
+}
+
+.edit:hover {
+	background-image: url(images/edit_hover.png);
+}
+
+.delete {
+	display: block;
+	width: 40px;
+	padding-top: 40px;
+	background: url(images/delete.png) no-repeat 50% 50% #aaa;
+	background-size: 40px;
+	transition: background .3s;
+	cursor: pointer;
+}
+
+.delete:hover {
+	background-image: url(images/delete_hover.png);
 }
 
 .header-action {
@@ -316,9 +378,19 @@ input[type=file] {
 	margin-bottom: 0;
 }
 
-.text {
+.form button {
+	margin-bottom: 20px;
+	width: 200px;
+	line-height: 30px;
+}
+
+.add-descr {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
+}
+
+.long-text .area, .long-text .area-result {
+	height: 800px;
 }
 
 .area, .area-result {
@@ -401,9 +473,20 @@ input[type=file] {
 	line-height: 0px;
 }
 
+.loading {
+	text-align: center;
+	line-height: 200px;
+	font-size: 22px;
+}
+
+.margin {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 @media(min-width: 1200px) {
 	#app {
-		max-width: 1200px;
+		width: 1200px;
 		margin: 0 auto;
 	}
 
@@ -432,11 +515,8 @@ input[type=file] {
 
 	.book-short {
 		max-width: 230px;
-	}
-
-	.search, .upload, .add {
-		width: 1200px;
-
+		max-height: 330px;
+		overflow: hidden;
 	}
 }
 

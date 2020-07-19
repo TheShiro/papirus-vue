@@ -1,5 +1,5 @@
 <template>
-	<div class="bookAction">
+	<div class="categoryAction">
 		<div class="message">
 			<transition name="message">
 				<div class="success" v-if="success">{{message}}</div>
@@ -9,16 +9,24 @@
 			</transition>
 		</div>
 
-		<div class="header-action">
-			<h3 class="title">Загрузка > Добавить категорию</h3>
-			<div class="back-btn" @click="switchAction('IndexAction')">Назад</div>
-		</div>
+		<div class="plus" @click="switchAction('AddCategory')"></div>
 
-		<div class="form">
-			<input type="text" v-model="name" placeholder="Название">
-
-			<button @click="sendForm()">Добавить</button>
+		<div class="table" v-if="done">
+			<div class="elem">
+				<div>Название</div>
+				<div>Действие</div>
+			</div>
+			<div class="elem" v-for="category in categories">
+				<div>{{category.name}}</div>
+				<div class="action">
+					<div class="edit" @click="edit(category)"></div>
+					<div class="delete" @click="del(category.id)"></div>
+				</div>
+			</div>
 		</div>
+		<div class="loading" v-else>
+	    	загрузка...
+	    </div>
 	</div>
 </template>
 
@@ -26,8 +34,8 @@
 export default {
 	data() {
 		return {
-			//field in DB
-			name: '',
+			categories: [],
+			done: false,
 			//message
 			success: true,
 			error: false,
@@ -35,21 +43,42 @@ export default {
 		}		
 	},
 
+	created() {
+		this.start()
+	},
+
 	methods: {
+		start() {
+			this.axios.get(this.$root.api + 'category')
+				.then(response => (
+					this.categories = response.data,
+					this.done = true
+				))
+		},
+
 		switchAction(act) {
 			this.$parent.$data.action = act
 		},
 
-		sendForm() {
-			var params = 'name='+this.name
+		edit(data) {
+			this.$parent.$data.props = {
+				id: data.id,
+				name: data.name
+			}
+			this.switchAction('EditCategory')
+		},
+
+		del(id) {
+			var params = 'id=' + id
 			
-			//add boocategoryk
-			this.axios.post('http://localhost:8000/api/category', params)
+			//add book
+			this.axios.post(this.$root.api + 'category/delete', params)
 			.then((response) => {
-				this.set_message('success', 'Запись добавлена')
+				this.set_message('success', 'Запись удалена')
+				this.start()
 			})
 			.catch((response) => {
-				this.set_message('error', 'Ошибка добавления записи')
+				this.set_message('error', 'Ошибка удаления записи')
 			})
 		},
 
@@ -62,7 +91,13 @@ export default {
 				this.success = true
 				this.error = false
 			}
+
+			//hide message
+			setTimeout(() => {
+				this.success = false
+				this.error = false
+			}, 5000)
 		}
-	},
+	}
 }
 </script>

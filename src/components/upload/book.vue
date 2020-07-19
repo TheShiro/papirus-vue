@@ -9,36 +9,28 @@
 			</transition>
 		</div>
 
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<div class="header-action">
-			<h3 class="title">Загрузка > Добавить книгу</h3>
-			<div class="back-btn" @click="switchAction('IndexAction')">Назад</div>
-		</div>
+		<div class="plus" @click="switchAction('AddBook')"></div>
 
-		<div class="form">
-			<input type="text" v-model="title" placeholder="Название">
-			<div class="text">
-				<textarea v-model="description" placeholder="Описание" class="area"></textarea>
-				<div class="area-result" v-html="this.$options.filters.marked(description)"></div>
+		<div class="table" v-if="done">
+			<div class="elem">
+				<div>Название</div>
+				<div>Автор</div>
+				<div>Алиас</div>
+				<div>Действие</div>
 			</div>
-			<input type="text" v-model="author" placeholder="Автор">
-			<select v-model="category_id">
-				<option disabled value="">Выберите категорию</option>
-				<option v-for="category in categories" :value="category.id">{{category.name}}</option>
-			</select>
-			<div class="preview_image">
-				<label class="label">
-					<i class="material-icons">attach_file</i>
-					<span class="add-file">Добавить файл</span>
-					<input type="file" ref="file" @change="uploadFile()">
-				</label>
-				<img :src="file_path" v-if="upload_image">
+			<div class="elem" v-for="book in books" >
+				<div>{{book.title}}</div>
+				<div>{{book.author}}</div>
+				<div>{{book.alias}}</div>
+				<div class="action">
+					<div class="edit" @click="edit(book)"></div>
+					<div class="delete" @click="del(book.id)"></div>
+				</div>
 			</div>
-			<input type="text" v-model="alias" placeholder="Алиас">
-
-			<button @click="sendForm()">Добавить</button>
-			<!-- <button @click="test()">test</button> -->
 		</div>
+		<div class="loading" v-else>
+	    	загрузка...
+	    </div>
 	</div>
 </template>
 
@@ -46,63 +38,56 @@
 export default {
 	data() {
 		return {
-			//field in DB
-			title: '',
-			description: '',
-			author: '',
-			category_id: '',
-			image: '',
-			alias: '',
-			categories: [],
+			books: [],
+			done: false,
 			//message
 			success: true,
 			error: false,
 			message: '',
-			//upload file
-			file: null,
-			upload_image: false,
-			file_path: ''
 		}
 	},
 
-	
+	created() {
+		this.start()
+	},
+
 	methods: {
+		start() {
+			this.axios.get(this.$root.api + 'books')
+				.then(response => (
+					this.books = response.data,
+					this.done = true
+				))
+		},
+
 		switchAction(act) {
 			this.$parent.$data.action = act
 		},
 
-		sendForm() {
-			var params = 'title='+this.title+'&'+
-				'description='+this.description+'&'+
-				'author='+this.author+'&'+
-				'category_id='+this.category_id+'&'+
-				'image='+this.image+'&'+
-				'alias='+this.alias
-			
-			//add book
-			this.axios.post('http://localhost:8000/api/books', params)
-			.then((response) => {
-				this.set_message('success', 'Запись добавлена')
-			})
-			.catch((response) => {
-				this.set_message('error', 'Ошибка добавления записи')
-			})
+		edit(data) {
+			this.$parent.$data.props = {
+				id: data.id,
+				title: data.title,
+				description: data.description,
+				author: data.author,
+				category_id: data.category_id,
+				image: data.image,
+				alias: data.alias
+			}
+			this.switchAction('EditBook')
 		},
 
-		uploadFile() {
-			this.file = this.$refs.file.files[0]
-
-			let formData = new FormData()
-			formData.append('file', this.file)
-
-			this.axios.post( 'http://localhost:8000/api/file/upload', formData)
+		del(id) {
+			var params = 'id=' + id
+			
+			//add book
+			this.axios.post(this.$root.api + 'books/delete', params)
 			.then((response) => {
-				this.image = response.data
-				this.file_path = 'http://localhost:8000/storage/' + response.data
-				this.upload_image = true
+				this.start()
+				this.set_message('success', 'Запись удалена')
 			})
 			.catch((response) => {
-				this.set_message('error', 'Ошибка загрузки изображения')
+				this.set_message('error', 'Ошибка удаления записи')
 			})
 		},
 
@@ -115,12 +100,13 @@ export default {
 				this.success = true
 				this.error = false
 			}
-		}
-	},
 
-	mounted() {
-		this.axios.get('http://localhost:8000/api/category')
-			.then(response => this.categories = response.data)
+			//hide message
+			setTimeout(() => {
+				this.success = false
+				this.error = false
+			}, 5000)
+		}
 	}
 }
 </script>

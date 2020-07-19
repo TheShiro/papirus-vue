@@ -10,7 +10,11 @@ Vue.config.productionTip = false
 Vue.filter('marked', marked)
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+	router,
+	store,
+	data: {
+		api: 'http://localhost:8000/api/',
+		storage : 'http://localhost:8000/storage/'
+	},
+	render: h => h(App)
 }).$mount('#app')

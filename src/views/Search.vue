@@ -28,7 +28,7 @@ export default {
         fetch() {
         	// console.log(this.search)
 
-            this.axios.get('http://localhost:8000/api/books/search/' + this.search)
+            this.axios.get(this.$root.api + 'books/search/' + this.search)
                 .then(response => this.results = response.data)
         },
 
